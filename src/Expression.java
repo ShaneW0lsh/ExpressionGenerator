@@ -1,6 +1,7 @@
 import java.util.Random;
 
 class Expression {
+
     public String evaluate() { 
         AddExpression aExpr = new AddExpression();
 
@@ -13,9 +14,6 @@ class AddExpression {
     LeftExpression lExpr;
     RightExpression rExpr;
 
-    // public AddExpression() { 
-    //     evaluate();
-    // }
     public String evaluate() { 
         lExpr = new LeftExpression();
         rExpr = new RightExpression();
@@ -24,28 +22,30 @@ class AddExpression {
 
         return ret;
     }
-
 }
 
 class LeftExpression {
 
-    public int evaluate() {
-        return IntExpression.evaluate();   
+    public String evaluate() {
+        IntExpression iExpr = new IntExpression();
+        return iExpr.evaluate();
     }
 }
 
 class RightExpression {
 
-    public int evaluate() { 
-        return IntExpression.evaluate();   
+    public String evaluate() { 
+        IntExpression iExpr = new IntExpression();
+        return iExpr.evaluate();
     }
 }
 
 class IntExpression {
 
-    public static int evaluate() {
+    public String evaluate() {
         Random rand = new Random();
         int ret = rand.nextInt(100);
-        return ret;
+
+        return Integer.toString(ret);
     }
 }
