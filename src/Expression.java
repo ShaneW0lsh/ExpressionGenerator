@@ -1,51 +1,65 @@
 import java.util.Random;
 
-class Expression {
+interface Expression {
 
-    public String evaluate() { 
-        AddExpression aExpr = new AddExpression();
-
-        return aExpr.evaluate();
-    }
+    public String buildWord();
 }
 
 
-class AddExpression {
-    LeftExpression lExpr;
-    RightExpression rExpr;
+class AddExpression implements Expression{
+    private LeftExpression lExpr;
+    private RightExpression rExpr;
 
-    public String evaluate() { 
-        lExpr = new LeftExpression();
-        rExpr = new RightExpression();
-
-        String ret = lExpr.evaluate() + "+" + rExpr.evaluate();
-
-        return ret;
+    public AddExpression() { 
+        this.lExpr = new LeftExpression();
+        this.rExpr = new RightExpression();
+    }
+    
+    public String buildWord() {
+        return lExpr.buildWord() + " + " + rExpr.buildWord();
     }
 }
 
-class LeftExpression {
+class LeftExpression implements Expression {
+    private IntExpression intExpr;
 
-    public String evaluate() {
-        IntExpression iExpr = new IntExpression();
-        return iExpr.evaluate();
+    public LeftExpression() {
+        this.intExpr = new IntExpression();
+    }
+
+    public String buildWord() {
+        return intExpr.buildWord();
     }
 }
 
-class RightExpression {
+class RightExpression implements Expression { 
+    private IntExpression intExpr;
 
-    public String evaluate() { 
-        IntExpression iExpr = new IntExpression();
-        return iExpr.evaluate();
+    public RightExpression() {
+        this.intExpr = new IntExpression();
+    }
+
+    public String buildWord() {
+        return intExpr.buildWord();
     }
 }
 
-class IntExpression {
+class IntExpression implements Expression {
+    private int value;
+    private Random rand;
 
-    public String evaluate() {
-        Random rand = new Random();
-        int ret = rand.nextInt(100);
+    public IntExpression() {
+        this.rand = new Random();
+    }
 
-        return Integer.toString(ret);
+    public String buildWord() {
+        int value = rand.nextInt(101);
+        this.value = value;
+
+        return Integer.toString(value);
+    }
+
+    public int getValue() {
+        return this.value;
     }
 }
