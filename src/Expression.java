@@ -5,7 +5,6 @@ interface Expression {
     public String buildWord();
 }
 
-
 class AddExpression implements Expression{
     private LeftExpression lExpr;
     private RightExpression rExpr;
@@ -16,7 +15,21 @@ class AddExpression implements Expression{
     }
     
     public String buildWord() {
-        return lExpr.buildWord() + " + " + rExpr.buildWord();
+        return String.format("(%s + %s)", lExpr.buildWord(), rExpr.buildWord());
+    }
+}
+
+class MultiplyExpression implements Expression{
+    private LeftExpression lExpr;
+    private RightExpression rExpr;
+
+    public MultiplyExpression() { 
+        this.lExpr = new LeftExpression();
+        this.rExpr = new RightExpression();
+    }
+    
+    public String buildWord() {
+        return String.format("%s * %s", lExpr.buildWord(), rExpr.buildWord());   
     }
 }
 
