@@ -1,22 +1,33 @@
 import java.util.Random;
 
-interface Expression {
+//evaluate runs on all of it's children and get's their Strings objects from toSTring() method
 
-    public String buildWord(int depth);
+interface Expression {
+    public String toString();
+    public int evaluate();
 }
 
 class AddExpression implements Expression{
     private LeftExpression lExpr;
     private RightExpression rExpr;
 
-    public AddExpression() { 
+    private int value;
+    private String inString;
 
+    public AddExpression(int depth) { 
+        this.lExpr = new LeftExpression(depth-1);
+        this.rExpr = new RightExpression(depth-1);
+
+        this.value = lExpr.evaluate() + rExpr.evaluate();
+        this.inString = String.format("(%s + %s)", lExpr.toString(), rExpr.toString());    
     }
-    
-    public String buildWord(int depth) {
-        this.lExpr = new LeftExpression();
-        this.rExpr = new RightExpression();
-        return String.format("(%s + %s)", lExpr.buildWord(depth-1), rExpr.buildWord(depth-1));
+
+    public String toString() {
+        return this.inString;
+    }
+
+    public int evaluate() {
+        return this.value;
     }
 }
 
@@ -24,14 +35,23 @@ class MultiplyExpression implements Expression{
     private LeftExpression lExpr;
     private RightExpression rExpr;
 
-    public MultiplyExpression() { 
+    private int value;
+    private String inString;
 
+    public MultiplyExpression(int depth) { 
+        this.lExpr = new LeftExpression(depth-1);
+        this.rExpr = new RightExpression(depth-1);
+
+        this.value = lExpr.evaluate() * rExpr.evaluate();
+        this.inString = String.format("%s * %s", lExpr.toString(), rExpr.toString());    
     }
-    
-    public String buildWord(int depth) {
-        this.lExpr = new LeftExpression();
-        this.rExpr = new RightExpression();
-        return String.format("%s * %s", lExpr.buildWord(depth-1), rExpr.buildWord(depth-1));   
+
+    public String toString() {
+        return this.inString;
+    }
+
+    public int evaluate() {
+        return this.value;
     }
 }
 
@@ -40,27 +60,37 @@ class LeftExpression implements Expression {
     private MultiplyExpression mulExpr;
     private AddExpression addExpr;
 
-    // is created recursively
-    public LeftExpression() {
+    private int value;
+    private String inString;
 
-    }
-
-    public String buildWord(int depth) {
+    //rewrite this in a EXPRESSION as out way
+    public LeftExpression(int depth) {
         if (depth <= 0) {
-            this.intExpr = new IntExpression();
-            return intExpr.buildWord(depth-1);
+            //TODO
+            this.intExpr = new IntExpression(depth-1);
+            this.value = intExpr.evaluate();
+            this.inString = intExpr.toString();
         } else {
             Random rand = new Random();
             int p = rand.nextInt(2);
-
             if (p == 1) {
-                this.addExpr = new AddExpression();
-                return addExpr.buildWord(depth-1);
+                this.addExpr = new AddExpression(depth-1);
+                this.value = addExpr.evaluate();
+                this.inString = addExpr.toString();
             } else { 
-                this.mulExpr = new MultiplyExpression();
-                return mulExpr.buildWord(depth-1);
+                this.mulExpr = new MultiplyExpression(depth-1);
+                this.value = mulExpr.evaluate();
+                this.inString = mulExpr.toString();
             }
         }
+    }
+
+    public String toString() {
+        return this.inString;
+    }
+
+    public int evaluate() {
+        return this.value;
     }
 }
 
@@ -69,46 +99,56 @@ class RightExpression implements Expression {
     private MultiplyExpression mulExpr;
     private AddExpression addExpr;
 
-    public RightExpression() {
+    private int value;
+    private String inString;
 
-    }
-
-    public String buildWord(int depth) {
+    //rewrite this in a EXPRESSION as out way
+    public RightExpression(int depth) {
         if (depth <= 0) {
-            this.intExpr = new IntExpression();
-            return intExpr.buildWord(depth-1);
+            //TODO
+            this.intExpr = new IntExpression(depth-1);
+            this.value = intExpr.evaluate();
+            this.inString = intExpr.toString();
         } else {
             Random rand = new Random();
             int p = rand.nextInt(2);
-
             if (p == 1) {
-                this.addExpr = new AddExpression();
-                return addExpr.buildWord(depth-1);
-
+                this.addExpr = new AddExpression(depth-1);
+                this.value = addExpr.evaluate();
+                this.inString = addExpr.toString();
             } else { 
-                this.mulExpr = new MultiplyExpression();
-                return mulExpr.buildWord(depth-1);
+                this.mulExpr = new MultiplyExpression(depth-1);
+                this.value = mulExpr.evaluate();
+                this.inString = mulExpr.toString();
             }
         }
+    }
+
+    public String toString() {
+        return this.inString;
+    }
+
+    public int evaluate() {
+        return this.value;
     }
 }
 
 class IntExpression implements Expression {
     private int value;
-    private Random rand;
+    private String inString;
 
-    public IntExpression() {
-        this.rand = new Random();
+    public IntExpression(int depth) {
+        Random rand = new Random();
+        this.value = rand.nextInt(101);
+        // System.out.println("A value was successfully generated: " + this.value);
+        this.inString = Integer.toString(this.value);
     }
 
-    public String buildWord(int depth) {
-        int value = rand.nextInt(101);
-        this.value = value;
-
-        return Integer.toString(value);
+    public String toString() { 
+        return this.inString;
     }
 
-    public int getValue() {
+    public int evaluate() {
         return this.value;
     }
 }
