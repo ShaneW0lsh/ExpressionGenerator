@@ -54,33 +54,25 @@ class MultiplyExpression implements Expression {
 }
 
 class LeftExpression implements Expression {
-    private IntExpression intExpr;
-    private MultiplyExpression mulExpr;
-    private AddExpression addExpr;
+    private Expression outExpr;
 
     private int value;
     private String inString;
 
-    //rewrite this in a EXPRESSION as out way
     public LeftExpression(int depth) {
         if (depth <= 0) {
-            //TODO
-            this.intExpr = new IntExpression(depth-1);
-            this.value = intExpr.evaluate();
-            this.inString = intExpr.toString();
+            this.outExpr = new IntExpression(depth-1);
         } else {
             Random rand = new Random();
             int p = rand.nextInt(2);
             if (p == 1) {
-                this.addExpr = new AddExpression(depth-1);
-                this.value = addExpr.evaluate();
-                this.inString = addExpr.toString();
+                this.outExpr = new AddExpression(depth-1);
             } else { 
-                this.mulExpr = new MultiplyExpression(depth-1);
-                this.value = mulExpr.evaluate();
-                this.inString = mulExpr.toString();
+                this.outExpr = new MultiplyExpression(depth-1);
             }
         }
+        this.value = outExpr.evaluate();
+        this.inString = outExpr.toString();
     }
 
     public String toString() {
@@ -93,33 +85,25 @@ class LeftExpression implements Expression {
 }
 
 class RightExpression implements Expression { 
-    private IntExpression intExpr;
-    private MultiplyExpression mulExpr;
-    private AddExpression addExpr;
+    private Expression outExpr;
 
     private int value;
     private String inString;
 
-    //rewrite this in a EXPRESSION as out way
     public RightExpression(int depth) {
         if (depth <= 0) {
-            //TODO
-            this.intExpr = new IntExpression(depth-1);
-            this.value = intExpr.evaluate();
-            this.inString = intExpr.toString();
+            this.outExpr = new IntExpression(depth-1);
         } else {
             Random rand = new Random();
             int p = rand.nextInt(2);
             if (p == 1) {
-                this.addExpr = new AddExpression(depth-1);
-                this.value = addExpr.evaluate();
-                this.inString = addExpr.toString();
+                this.outExpr = new AddExpression(depth-1);
             } else { 
-                this.mulExpr = new MultiplyExpression(depth-1);
-                this.value = mulExpr.evaluate();
-                this.inString = mulExpr.toString();
+                this.outExpr = new MultiplyExpression(depth-1);
             }
         }
+        this.value = outExpr.evaluate();
+        this.inString = outExpr.toString();
     }
 
     public String toString() {
