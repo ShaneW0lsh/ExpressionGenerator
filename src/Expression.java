@@ -52,7 +52,6 @@ class mExpression extends Expression{
             if (p == 1) {
                 this.out = new MultiplyExpression(depth-1);
             } else { 
-  found: no argument
                 this.out = new AddMExpression(depth-1);
             }
         }
