@@ -1,7 +1,34 @@
 import java.util.Random;
 import java.util.Scanner;
 
-// abstract, afterglow, angr, ayu, carbonized-dark, deep-space, flattened_dark, focuspoint, hybrid, meta5, minimalist, molokai
+// TODO: 
+//
+// implement that "less clustered" grammar
+// 1. rewrite expression into a class, and make everything be extendend from it, instead of them implementing 
+// 2. create an expression which is an argument for a multiplication
+// 3. implement all of it's qualities
+
+// new one 
+// E -> I
+// E -> M '*' M
+// E -> E '+' E
+// M -> I
+// M -> M '*' M
+// M -> '(' E '+' E ')'
+
+// old one
+// E -> I
+// E -> (E + E)
+// E -> E * E
+
+//AddExpression
+//MultiplyExpression
+//AddMExpression
+
+
+
+//IntExpression
+
 class ExpressionGenerator { 
     private static Random rand = new Random();
 
@@ -12,24 +39,9 @@ class ExpressionGenerator {
         int depth = sc.nextInt();
         int n = sc.nextInt();
 
-
-        Expression expr = generate(depth);
         for (int i = 0; i < n; ++i) { 
-            expr = generate(depth);
+            Expression expr = new Expression(depth);
             System.out.println(String.format("%s = %d", expr.toString(), expr.evaluate()));
         }
-    }
-
-    public static Expression generate(int depth) {
-        Expression expr;
-
-        int p = rand.nextInt(2);
-        if (p == 0) {
-            expr = new MultiplyExpression(depth);
-        } else {
-            expr = new AddExpression(depth);
-        }
-
-        return expr;
     }
 }
