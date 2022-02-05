@@ -21,14 +21,6 @@ import java.util.Scanner;
 // E -> (E + E)
 // E -> E * E
 
-//AddExpression
-//MultiplyExpression
-//AddMExpression
-
-
-
-//IntExpression
-
 class ExpressionGenerator { 
     private static Random rand = new Random();
 

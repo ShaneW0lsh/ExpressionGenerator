@@ -52,6 +52,7 @@ class mExpression extends Expression{
             if (p == 1) {
                 this.out = new MultiplyExpression(depth-1);
             } else { 
+  found: no argument
                 this.out = new AddMExpression(depth-1);
             }
         }
@@ -158,72 +159,3 @@ class IntExpression extends Expression {
         return this.value;
     }
 }
-
-
-
-
-
-//TODO: there should probably be only one class for both, because they are like... similar...
-// there is no point in keeping absolutely similar classes being separate
-// name it something like PartExpression
-// class LeftExpression extends Expression {
-//     private Expression out;
-
-//     private int value;
-//     private String inString;
-
-//     public LeftExpression(int depth) {
-//         if (depth <= 0) {
-//             this.out = new IntExpression(depth-1);
-//         } else {
-//             Random rand = new Random();
-//             int p = rand.nextInt(2);
-//             if (p == 1) {
-//                 this.out = new AddExpression(depth-1);
-//             } else { 
-//                 this.out = new MultiplyExpression(depth-1);
-//             }
-//         }
-//         this.value = out.evaluate();
-//         this.inString = out.toString();
-//     }
-
-//     public String toString() {
-//         return this.inString;
-//     }
-
-//     public int evaluate() {
-//         return this.value;
-//     }
-// }
-
-// class RightExpression extends Expression { 
-//     private Expression out;
-
-//     private int value;
-//     private String inString;
-
-//     public RightExpression(int depth) {
-//         if (depth <= 0) {
-//             this.out = new IntExpression(depth-1);
-//         } else {
-//             Random rand = new Random();
-//             int p = rand.nextInt(2);
-//             if (p == 1) {
-//                 this.out = new AddExpression(depth-1);
-//             } else { 
-//                 this.out = new MultiplyExpression(depth-1);
-//             }
-//         }
-//         this.value = out.evaluate();
-//         this.inString = out.toString();
-//     }
-
-//     public String toString() {
-//         return this.inString;
-//     }
-
-//     public int evaluate() {
-//         return this.value;
-//     }
-// }
