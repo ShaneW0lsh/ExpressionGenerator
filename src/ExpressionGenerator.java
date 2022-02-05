@@ -1,15 +1,17 @@
 import java.util.Random;
 import java.util.Scanner;
 
+// abstract, afterglow, angr, ayu, carbonized-dark, deep-space, flattened_dark, focuspoint, hybrid, meta5, minimalist, molokai
 class ExpressionGenerator { 
     private static Random rand = new Random();
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("write in the depth and the number of expressions generated");
+        System.out.println("Write in the depth and the number of expressions generated");
 
         int depth = sc.nextInt();
         int n = sc.nextInt();
+
 
         Expression expr = generate(depth);
         for (int i = 0; i < n; ++i) { 

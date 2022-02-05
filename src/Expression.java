@@ -1,13 +1,11 @@
 import java.util.Random;
 
-//evaluate runs on all of it's children and get's their Strings objects from toSTring() method
-
 interface Expression {
     public String toString();
     public int evaluate();
 }
 
-class AddExpression implements Expression{
+class AddExpression implements Expression {
     private LeftExpression lExpr;
     private RightExpression rExpr;
 
@@ -31,7 +29,7 @@ class AddExpression implements Expression{
     }
 }
 
-class MultiplyExpression implements Expression{
+class MultiplyExpression implements Expression {
     private LeftExpression lExpr;
     private RightExpression rExpr;
 
