@@ -2,24 +2,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 // TODO: 
-//
-// implement that "less clustered" grammar
-// 1. rewrite expression into a class, and make everything be extendend from it, instead of them implementing 
-// 2. create an expression which is an argument for a multiplication
-// 3. implement all of it's qualities
+// 2. Answers are too big 
 
-// new one 
-// E -> I
-// E -> M '*' M
-// E -> E '+' E
-// M -> I
-// M -> M '*' M
-// M -> '(' E '+' E ')'
-
-// old one
-// E -> I
-// E -> (E + E)
-// E -> E * E
 
 class ExpressionGenerator { 
     private static Random rand = new Random();
@@ -30,9 +14,10 @@ class ExpressionGenerator {
 
         int depth = sc.nextInt();
         int n = sc.nextInt();
+        int border = 100;
 
         for (int i = 0; i < n; ++i) { 
-            Expression expr = new Expression(depth);
+            Expression expr = new Expression(depth, border);
             System.out.println(String.format("%s = %d", expr.toString(), expr.evaluate()));
         }
     }
