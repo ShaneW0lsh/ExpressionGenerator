@@ -15,17 +15,23 @@ import java.util.Random;
 
 public class Expression {
 
-    public Expression(int depth, int constraint) {
+    public Expression(int depth, int constraint,
+                    ArrayList<Operator> operators) {
         final Expression out;
-        if (depth <= 0) {
+        if (depth <= 0)
             out = new IntExpression(constraint);
-        } else {
+        else {
             Random rand = new Random();
-            if (0 == rand.nextInt(2)) {
+            int ri = r.nextInt(operators.size());
+            operators[ri].generate(depth, constraint, false);
+
+
+            /*
+            if (0 == r.nextInt(2))
                 out = new AddExpression(depth - 1, constraint);
-            } else {
+            else
                 out = new MultiplyExpression(depth - 1, constraint);
-            }
+                */
         }
 
         mValue = out.evaluate();
@@ -34,12 +40,11 @@ public class Expression {
 
     public Expression() {}
 
-    public String toString() {
+    public String toString()
         return mStr;
-    }
-    public int evaluate() {
+
+    public int evaluate()
         return mValue;
-    }
 
     protected int mValue;
     protected String mStr;

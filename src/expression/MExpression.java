@@ -6,17 +6,15 @@ public class MExpression extends Expression {
 
     public MExpression(int depth, int constraint) {
         final Expression out;
-        if (depth <= 0) {
+        if (depth <= 0)
             out = new IntExpression(constraint);
-        } else {
+        else {
             Random rand = new Random();
-            if (0 == rand.nextInt(2)) {
+            if (0 == rand.nextInt(2))
                 out = new MultiplyExpression(depth - 1, constraint);
-            } else {
+            else
                 out = new AddMExpression(depth - 1, constraint);
-            }
         }
-
         mValue = out.evaluate();
         mStr = out.toString();
     }

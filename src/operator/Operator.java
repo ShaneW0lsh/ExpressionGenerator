@@ -1,0 +1,4 @@
+
+interface Operator { 
+    Expression generate();
+}
