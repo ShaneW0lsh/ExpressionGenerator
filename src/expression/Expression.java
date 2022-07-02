@@ -1,7 +1,7 @@
-package com.shane.mathack.util.expression;
+package expression;
 
 import java.util.Random;
-
+import java.util.ArrayList;
 
 // This package of classes implements this grammar:
 //
@@ -23,7 +23,7 @@ public class Expression {
         else {
             Random rand = new Random();
             int ri = r.nextInt(operators.size());
-            operators[ri].generate(depth, constraint, false);
+            operators[ri].generate(depth, constraint);
 
 
             /*
@@ -40,11 +40,13 @@ public class Expression {
 
     public Expression() {}
 
-    public String toString()
+    public String toString() {
         return mStr;
+    }
 
-    public int evaluate()
+    public int evaluate() {
         return mValue;
+    }
 
     protected int mValue;
     protected String mStr;

@@ -1,4 +1,4 @@
-package com.shane.mathack.util.expression;
+package expression;
 
 import java.util.Random;
 
