@@ -1,14 +1,15 @@
-package main;
+import java.io.*;
+import java.util.ArrayList;
 
-import expression.Expression;
+public class Main {
 
-public class Main { 
+    public static void main(String[] args) {
+        ArrayList<Operator> oper = new ArrayList<Operator>();
+        oper.add(new Sum())
+        oper.add(new Product());
 
-    public static void main(String[] args) { 
-        ArrayList<Operator> oper = new ArrayList();
-        oper.add(new Sum());
-
-        String e = Expression(3, 1000, oper);
-        System.out.println(e);
+        Expression e = new Expression(2, 1000, oper);
+        String estr = e.toString();
+        System.out.println(estr);
     }
 }
