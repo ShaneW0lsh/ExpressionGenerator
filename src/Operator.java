@@ -19,6 +19,13 @@ class Sum implements Operator {
     }
 }
 
+class Substraction implements Operator { 
+    
+    public Substraction() {}
+
+    public Expression generate(int depth, int constraint) {}
+}
+
 class Product implements Operator { 
 
     public Product() {}

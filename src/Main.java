@@ -9,7 +9,7 @@ public class Main {
         operators.add(new Product());
 
         for (int i = 0; i < 10; ++i) { 
-            Expression e = new Expression(3, 5000, operators);
+            Expression e = new Expression(3, 500, operators);
             System.out.println(String.format("%s = %d", e.toString(), e.evaluate()));
         }
     }
