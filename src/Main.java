@@ -7,6 +7,7 @@ public class Main {
         ArrayList<Operator> operators = new ArrayList<Operator>();
         operators.add(new Sum());
         operators.add(new Product());
+        operators.add(new Substraction());
 
         for (int i = 0; i < 10; ++i) { 
             Expression e = new Expression(3, 500, operators);
