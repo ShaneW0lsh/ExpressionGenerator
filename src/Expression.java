@@ -1,32 +1,47 @@
 import java.util.Random;
 import java.util.ArrayList;
 
-// This package of classes implements this grammar:
-//
-// E -> I
-// E -> E + E
-// E -> M * M
-// M -> I
-// M -> (E + E)
-// M -> M * M
+/**
+* This package of classes implements this grammar:
+*         E => I
+*         E => E + E
+*         E => M * M
+*         M => I
+*         M => (E + E)
+*         M => M * M
+*
+*           M stands for "multiplicant" and "multiplier"
+**/
 
 public class Expression {
 
+    protected int mValue;
+    protected String mStr;
+    protected static ArrayList<Operator> sOperators;
+
     public Expression(int depth, int constraint,
-                    ArrayList<Operator> operators) {
+                      ArrayList<Operator> operators) {
+        sOperators = operators;
+        create(depth, constraint);
+    }
+
+    public Expression(int depth, int constraint) {
+        create(depth, constraint);
+    }
+
+    private void create(int depth, int constraint) {
         final Expression out;
         if (depth <= 0)
             out = new IntExpression(constraint);
         else {
             Random rand = new Random();
-            int ri = rand.nextInt(operators.size());
-            out = operators.get(ri).generate(depth, constraint, operators, false); // try adding -1
+            int ri = rand.nextInt(sOperators.size());
+            out = sOperators.get(ri).generate(depth-1, constraint, false); // try adding -1
         }
 
         mValue = out.evaluate();
         mStr = out.toString();
     }
-
 
     public Expression() {}
 
@@ -37,35 +52,14 @@ public class Expression {
     public int evaluate() {
         return mValue;
     }
-
-    protected int mValue;
-    protected String mStr;
-}
-
-class MExpression extends Expression {
-
-    public MExpression(int depth, int constraint,
-            ArrayList<Operator> operators) {
-        final Expression out;
-        if (depth <= 0)
-            out = new IntExpression(constraint);
-        else {
-            Random rand = new Random();
-            int ri = rand.nextInt(operators.size());
-            out = operators.get(ri).generate(depth, constraint, operators, true);
-        }
-        mValue = out.evaluate();
-        mStr = out.toString();
-    }
 }
 
 class AddExpression extends Expression {
 
-    public AddExpression(int depth, int constraint,
-            ArrayList<Operator> operators) {
+    public AddExpression(int depth, int constraint) {
         final Expression left, right;
-        left = new Expression(depth-1, constraint/2, operators);
-        right = new Expression(depth-1, constraint/2, operators);
+        left = new Expression(depth-1, constraint/2);
+        right = new Expression(depth-1, constraint/2);
 
         mValue = left.evaluate() + right.evaluate();
         mStr = String.format("%s+%s", left.toString(), right.toString());
@@ -74,24 +68,43 @@ class AddExpression extends Expression {
 
 class AddMExpression extends Expression {
 
-    public AddMExpression(int depth, int constraint,
-            ArrayList<Operator> operators) {
+    public AddMExpression(int depth, int constraint) {
         final Expression left, right;
-        left = new Expression(depth-1, constraint/2, operators);
-        right = new Expression(depth-1, constraint/2, operators);
+        left = new Expression(depth-1, constraint/2, sOperators);
+        right = new Expression(depth-1, constraint/2, sOperators);
 
         mValue = left.evaluate() + right.evaluate();
         mStr = String.format("(%s+%s)", left.toString(), right.toString());
     }
 }
 
+class MExpression extends Expression {
+
+    public MExpression(int depth, int constraint) {
+        create(depth, constraint);
+    }
+
+    private void create(int depth, int constraint) {
+        final Expression out;
+        if (depth <= 0)
+            out = new IntExpression(constraint);
+        else {
+            Random rand = new Random();
+            int ri = rand.nextInt(sOperators.size());
+            out = sOperators.get(ri).generate(depth-1, constraint, true); // try adding -1
+        }
+
+        mValue = out.evaluate();
+        mStr = out.toString();
+    }
+}
+
 class MultiplyExpression extends Expression {
 
-    public MultiplyExpression(int depth, int constraint,
-            ArrayList<Operator> operators) {
+    public MultiplyExpression(int depth, int constraint) {
         final Expression left, right;
-        left = new MExpression(depth-1, (int)Math.ceil(Math.sqrt(constraint)), operators);
-        right = new MExpression(depth-1, (int)Math.ceil(Math.sqrt(constraint)), operators);
+        left = new MExpression(depth-1, (int)Math.ceil(Math.sqrt(constraint)));
+        right = new MExpression(depth-1, (int)Math.ceil(Math.sqrt(constraint)));
 
         mValue = left.evaluate() * right.evaluate();
         mStr = String.format("%s*%s", left.toString(), right.toString());
@@ -107,17 +120,3 @@ class IntExpression extends Expression {
         mStr = Integer.toString(mValue);
     }
 }
-
-
-
-
-
-
-
-
-            /*
-            if (0 == r.nextInt(2))
-                out = new AddExpression(depth - 1, constraint);
-            else
-                out = new MultiplyExpression(depth - 1, constraint);
-                */
