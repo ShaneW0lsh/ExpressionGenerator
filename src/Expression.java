@@ -5,9 +5,11 @@ import java.util.ArrayList;
 * This package of classes implements this grammar:
 *         E => I
 *         E => E + E
+*         E => E - E
 *         E => M * M
 *         M => I
 *         M => (E + E)
+*         M => (E - E)
 *         M => M * M
 *
 *           M stands for "multiplicant" and "multiplier"
@@ -29,7 +31,7 @@ public class Expression {
         create(depth, constraint);
     }
 
-    private void create(int depth, int constraint) {
+    protected void create(int depth, int constraint) {
         final Expression out;
         if (depth <= 0)
             out = new IntExpression(constraint);
@@ -54,31 +56,59 @@ public class Expression {
     }
 }
 
-class AddExpression extends Expression {
+class AdditionExpression extends Expression {
 
-    public AddExpression(int depth, int constraint) {
+    public AdditionExpression(int depth, int constraint) {
         final Expression left, right;
 
         Random rand = new Random();
-        left = new Expression(depth-rand.nextInt(2)+1, constraint/2);
-        right = new Expression(depth-rand.nextInt(2)+1, constraint/2);
+        left = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
+        right = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
 
         mValue = left.evaluate() + right.evaluate();
         mStr = String.format("%s+%s", left.toString(), right.toString());
     }
 }
 
-class AddMExpression extends Expression {
+class SubstractionExpression extends Expression {
 
-    public AddMExpression(int depth, int constraint) {
+    public SubstractionExpression(int depth, int constraint) {
         final Expression left, right;
 
         Random rand = new Random();
-        left = new Expression(depth-rand.nextInt(2)+1, constraint/2);
-        right = new Expression(depth-rand.nextInt(2)+1, constraint/2);
+        left = new Expression(depth-(rand.nextInt(2)+1), constraint);
+        right = new Expression(depth-(rand.nextInt(2)+1), constraint);
+
+        mValue = left.evaluate() - right.evaluate();
+        mStr = String.format("%s-%s", left.toString(), right.toString());
+    }
+}
+
+class AdditionMExpression extends Expression {
+
+    public AdditionMExpression(int depth, int constraint) {
+        final Expression left, right;
+
+        Random rand = new Random();
+        left = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
+        right = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
 
         mValue = left.evaluate() + right.evaluate();
         mStr = String.format("(%s+%s)", left.toString(), right.toString());
+    }
+}
+
+class SubstractionMExpression extends Expression {
+
+    public SubstractionMExpression(int depth, int constraint) {
+        final Expression left, right;
+
+        Random rand = new Random();
+        left = new Expression(depth-(rand.nextInt(2)+1), constraint);
+        right = new Expression(depth-(rand.nextInt(2)+1), constraint);
+
+        mValue = left.evaluate() - right.evaluate();
+        mStr = String.format("(%s-%s)", left.toString(), right.toString());
     }
 }
 
@@ -88,7 +118,8 @@ class MExpression extends Expression {
         create(depth, constraint);
     }
 
-    private void create(int depth, int constraint) {
+    @Override
+    protected void create(int depth, int constraint) {
         final Expression out;
         if (depth <= 0)
             out = new IntExpression(constraint);
@@ -103,9 +134,9 @@ class MExpression extends Expression {
     }
 }
 
-class MultiplyExpression extends Expression {
+class MultiplicationExpression extends Expression {
 
-    public MultiplyExpression(int depth, int constraint) {
+    public MultiplicationExpression(int depth, int constraint) {
         final Expression left, right;
 
         Random rand = new Random();
@@ -117,6 +148,28 @@ class MultiplyExpression extends Expression {
     }
 }
 
+class DivisionExpression extends Expression {
+
+    public DivisionExpression(int constraint) {
+        int divident = new IntExpression(constraint).evaluate();
+        ArrayList<Integer> divisors = getDivisors(divident);
+        int divisor = new IntExpression(divisors).evaluate();
+        mValue = divident / divisor;
+        mStr = String.format("%s/%s", Integer.toString(divident), Integer.toString(divisor));
+    }
+
+    private ArrayList<Integer> getDivisors(int divident) {
+        ArrayList<Integer> divisors = new ArrayList<>();
+        for (int i = 2; i * i <= divident; ++i) {
+            if (divident % i == 0) {
+                divisors.add(i);
+                divisors.add(divident / i);
+            }
+        }
+        return divisors;
+    }
+}
+
 class IntExpression extends Expression {
 
     public IntExpression(int constraint) {
@@ -124,5 +177,17 @@ class IntExpression extends Expression {
         Random rand = new Random();
         mValue = rand.nextInt(constraint) + 1;
         mStr = Integer.toString(mValue);
+    }
+
+    public IntExpression(ArrayList<Integer> divisors) {
+        Random rand = new Random();
+        if (divisors.size() == 0) { 
+            mValue = rand.nextInt(10);
+            mStr = Integer.toString(mValue);
+        } else {
+            int ri = rand.nextInt(divisors.size());
+            mValue = divisors.get(ri);
+            mStr = Integer.toString(mValue);
+        }
     }
 }
