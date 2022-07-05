@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
 * This package of classes implements this grammar:
@@ -20,9 +21,12 @@ public class Expression {
     protected int mValue;
     protected String mStr;
     protected static Operators[] sOperators;
+    protected static int[] sBase = {2, 3, 5};
+    protected static HashMap<Integer, int[]> sBaseExponent;
 
     public Expression(int depth, int constraint, Operators[] operators) {
         sOperators = operators;
+        initArray();
         create(depth, constraint);
     }
 
@@ -32,6 +36,7 @@ public class Expression {
 
     protected void create(int depth, int constraint) {
         final Expression out;
+
         if (depth <= 0)
             out = new IntExpression(constraint);
         else {
@@ -50,6 +55,9 @@ public class Expression {
                 case DIVISION:
                     out = new DivisionExpression(constraint);
                     break;
+                case EXPONENTATION:
+                    out = new ExponentationExpression();
+                    break;
                 default:
                     out = new Expression();
             }
@@ -67,54 +75,17 @@ public class Expression {
     public int evaluate() {
         return mValue;
     }
-}
 
-class AdditionExpression extends Expression {
-
-    public AdditionExpression(int depth, int constraint) {
-        Random rand = new Random();
-        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint/2), 
-                   right = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
-
-        mValue = left.evaluate() + right.evaluate();
-        mStr = String.format("%s+%s", left.toString(), right.toString());
+    private void initArray() { 
+        sBaseExponent = new HashMap<Integer, int[]>();
+        int[] expTwo = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16};
+        int[] expThree = {2, 3, 4, 5};
+        int[] expFive = {2, 3, 4, 5};
+        sBaseExponent.put(new Integer(2), expTwo);
+        sBaseExponent.put(new Integer(3), expThree);
+        sBaseExponent.put(new Integer(5), expFive);
     }
-}
 
-class SubstractionExpression extends Expression {
-
-    public SubstractionExpression(int depth, int constraint) {
-        Random rand = new Random();
-        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint),
-                   right = new Expression(depth-(rand.nextInt(2)+1), constraint);
-
-        mValue = left.evaluate() - right.evaluate();
-        mStr = String.format("%s-%s", left.toString(), right.toString());
-    }
-}
-
-class AdditionMExpression extends Expression {
-
-    public AdditionMExpression(int depth, int constraint) {
-        Random rand = new Random();
-        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint/2),
-                   right = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
-
-        mValue = left.evaluate() + right.evaluate();
-        mStr = String.format("(%s+%s)", left.toString(), right.toString());
-    }
-}
-
-class SubstractionMExpression extends Expression {
-
-    public SubstractionMExpression(int depth, int constraint) {
-        Random rand = new Random();
-        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint),
-                   right = new Expression(depth-(rand.nextInt(2)+1), constraint);
-
-        mValue = left.evaluate() - right.evaluate();
-        mStr = String.format("(%s-%s)", left.toString(), right.toString());
-    }
 }
 
 class MExpression extends Expression {
@@ -144,6 +115,9 @@ class MExpression extends Expression {
                 case DIVISION:
                     out = new DivisionExpression(constraint);
                     break;
+                case EXPONENTATION:
+                    out = new ExponentationExpression();
+                    break;
                 default:
                     out = new Expression();
             }
@@ -152,6 +126,55 @@ class MExpression extends Expression {
         mStr = out.toString();
     }
 }
+
+class AdditionExpression extends Expression {
+
+    public AdditionExpression(int depth, int constraint) {
+        Random rand = new Random();
+        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint/2), 
+                   right = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
+
+        mValue = left.evaluate() + right.evaluate();
+        mStr = String.format("%s+%s", left.toString(), right.toString());
+    }
+}
+
+class AdditionMExpression extends Expression {
+
+    public AdditionMExpression(int depth, int constraint) {
+        Random rand = new Random();
+        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint/2),
+                   right = new Expression(depth-(rand.nextInt(2)+1), constraint/2);
+
+        mValue = left.evaluate() + right.evaluate();
+        mStr = String.format("(%s+%s)", left.toString(), right.toString());
+    }
+}
+
+class SubstractionExpression extends Expression {
+
+    public SubstractionExpression(int depth, int constraint) {
+        Random rand = new Random();
+        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint),
+                   right = new Expression(depth-(rand.nextInt(2)+1), constraint);
+
+        mValue = left.evaluate() - right.evaluate();
+        mStr = String.format("%s-%s", left.toString(), right.toString());
+    }
+}
+
+class SubstractionMExpression extends Expression {
+
+    public SubstractionMExpression(int depth, int constraint) {
+        Random rand = new Random();
+        Expression left = new Expression(depth-(rand.nextInt(2)+1), constraint),
+                   right = new Expression(depth-(rand.nextInt(2)+1), constraint);
+
+        mValue = left.evaluate() - right.evaluate();
+        mStr = String.format("(%s-%s)", left.toString(), right.toString());
+    }
+}
+
 
 class MultiplicationExpression extends Expression {
 
@@ -186,6 +209,19 @@ class DivisionExpression extends Expression {
             }
         }
         return divisors;
+    }
+}
+
+class ExponentationExpression extends Expression { 
+
+    public ExponentationExpression() { 
+        Random rand = new Random();
+        int rBase = sBase[rand.nextInt(sBase.length)];
+        int[] exponents = sBaseExponent.get(rBase);
+        int rExp = exponents[rand.nextInt(exponents.length)];
+        
+        mValue = (int)Math.pow(rBase, rExp);
+        mStr = String.format("%d^%d", rBase, rExp);
     }
 }
 
