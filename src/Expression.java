@@ -44,13 +44,16 @@ public class Expression {
             int ri = rand.nextInt(sOperators.length);
             switch(sOperators[ri]) { 
                 case ADDITION:
-                    out = new AdditionExpression(depth-(rand.nextInt(2)+1), constraint);
+                    out = new AdditionExpression(depth-(rand.nextInt(2)+1),
+                                                constraint);
                     break;
                 case SUBSTRACTION:
-                    out = new SubstractionExpression(depth-(rand.nextInt(2)+1), constraint);
+                    out = new SubstractionExpression(depth-(rand.nextInt(2)+1), 
+                                                    constraint);
                     break;
                 case MULTIPLICATION:
-                    out = new MultiplicationExpression(depth-(rand.nextInt(2)+1), constraint);
+                    out = new MultiplicationExpression(depth-(rand.nextInt(2)+1), 
+                                                        constraint);
                     break;
                 case DIVISION:
                     out = new DivisionExpression(constraint);
@@ -104,13 +107,16 @@ class MExpression extends Expression {
             int ri = rand.nextInt(sOperators.length);
             switch(sOperators[ri]) { 
                 case ADDITION:
-                    out = new AdditionMExpression(depth-(rand.nextInt(2)+1), constraint);
+                    out = new AdditionMExpression(depth-(rand.nextInt(2)+1),
+                                                    constraint);
                     break;
                 case SUBSTRACTION:
-                    out = new SubstractionMExpression(depth-(rand.nextInt(2)+1), constraint);
+                    out = new SubstractionMExpression(depth-(rand.nextInt(2)+1),
+                                                        constraint);
                     break;
                 case MULTIPLICATION:
-                    out = new MultiplicationExpression(depth-(rand.nextInt(2)+1), constraint);
+                    out = new MultiplicationExpression(depth-(rand.nextInt(2)+1), 
+                                                        constraint);
                     break;
                 case DIVISION:
                     out = new DivisionExpression(constraint);
