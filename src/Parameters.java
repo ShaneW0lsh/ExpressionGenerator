@@ -1,11 +1,13 @@
 import java.util.HashMap;
 
-public class ExprParameters { 
+public class Parameters { 
 
     private Operators[] mOperators;
     private HashMap<Integer, int[]> mBaseExponent;
+    private int mDepth = 3,
+                mConstraint = 300;
 
-    ExprParameters() {}
+    Parameters() {}
 
     public void setOperators(Operators[] op) {
         mOperators = op;
@@ -15,27 +17,27 @@ public class ExprParameters {
         return mOperators;
     }
 
-    public void setMaxDepth(int d) {
+    public void setDepth(int d) {
         mDepth = d; 
     }
 
-    public int getMaxDepth() { 
+    public int getDepth() { 
         return mDepth;
     }
 
-    public void setMaxAnswer(int a) { 
-        mAnswer = a;
+    public void setConstraint(int c) { 
+        mConstraint = c;
     }
 
-    public int getMaxAnswer() { 
-        return mAnswer;
+    public int getConstraint() { 
+        return mConstraint;
     }
 
     public void setBaseExponent(HashMap<Integer, int[]> be) { 
         mBaseExponent = new HashMap<Integer, int[]>(be);
     }
 
-    public HashMap<Integer, int[]> setBaseExponent() { 
+    public HashMap<Integer, int[]> getBaseExponent() { 
         return mBaseExponent;
     }
 }

@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
 * This package of classes implements this grammar:
@@ -20,23 +21,28 @@ public class Expression {
 
     protected int mValue;
     protected String mStr;
-    protected static Operators[] sOperators;
-    protected static int[] sBase = {2, 3, 5};
-    protected static HashMap<Integer, int[]> sBaseExponent;
+    static Operators[] sOperators;
 
-    public Expression(int depth, int constraint, Operators[] operators) {
-        sOperators = operators;
-        initArray();
-        create(depth, constraint);
+    static Parameters sParameters;
+    static HashMap<Integer, int[]> sBaseExponent;
+    static ArrayList<Integer> sBases;
+
+    public Expression(Parameters param) {
+        sParameters = param;
+        sOperators = sParameters.getOperators();
+        sBaseExponent = new HashMap<Integer, int[]>(param.getBaseExponent());
+
+        initBaseArray();
+
+        create(param.getDepth(), param.getConstraint());
     }
 
     public Expression(int depth, int constraint) {
         create(depth, constraint);
     }
 
-    protected void create(int depth, int constraint) {
+    private void create(int depth, int constraint) {
         final Expression out;
-
         if (depth <= 0)
             out = new IntExpression(constraint);
         else {
@@ -79,16 +85,12 @@ public class Expression {
         return mValue;
     }
 
-    private void initArray() { 
-        sBaseExponent = new HashMap<Integer, int[]>();
-        int[] expTwo = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16};
-        int[] expThree = {2, 3, 4, 5};
-        int[] expFive = {2, 3, 4, 5};
-        sBaseExponent.put(new Integer(2), expTwo);
-        sBaseExponent.put(new Integer(3), expThree);
-        sBaseExponent.put(new Integer(5), expFive);
+    private void initBaseArray() { 
+        sBases = new ArrayList<Integer>();
+        Set<Integer> keys = sBaseExponent.keySet();
+        for (Integer key : keys)
+            sBases.add(key);
     }
-
 }
 
 class MExpression extends Expression {
@@ -97,8 +99,7 @@ class MExpression extends Expression {
         create(depth, constraint);
     }
 
-    @Override
-    protected void create(int depth, int constraint) {
+    private void create(int depth, int constraint) {
         final Expression out;
         if (depth <= 0)
             out = new IntExpression(constraint);
@@ -222,7 +223,7 @@ class ExponentationExpression extends Expression {
 
     public ExponentationExpression() { 
         Random rand = new Random();
-        int rBase = sBase[rand.nextInt(sBase.length)];
+        int rBase = sBases.get(rand.nextInt(sBases.size()));
         int[] exponents = sBaseExponent.get(rBase);
         int rExp = exponents[rand.nextInt(exponents.length)];
         
