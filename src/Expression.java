@@ -9,10 +9,14 @@ import java.util.Set;
 *         E => E + E
 *         E => E - E
 *         E => M * M
+*         E => I / I
+*         E => I^I
 *         M => I
 *         M => (E + E)
 *         M => (E - E)
 *         M => M * M
+*         M => I / I
+*         M => I^I
 *
 *           M stands for "multiplicant" and "multiplier"
 **/
