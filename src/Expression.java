@@ -21,6 +21,7 @@ import java.util.Set;
 *           M stands for "multiplicant" and "multiplier"
 **/
 
+//TODO: make the code shorter, optimize it with OOP
 public class Expression {
 
     protected int mValue;
@@ -33,8 +34,8 @@ public class Expression {
 
     public Expression(Parameters param) {
         sParameters = param;
-        sOperators = sParameters.getOperators();
-        sBaseExponent = new HashMap<Integer, int[]>(param.getBaseExponent());
+        sOperators = param.getOperators();
+        sBaseExponent = param.getBaseExponent();
 
         initBaseArray();
 
@@ -186,7 +187,6 @@ class SubstractionMExpression extends Expression {
     }
 }
 
-
 class MultiplicationExpression extends Expression {
 
     public MultiplicationExpression(int depth, int constraint) {
@@ -207,6 +207,7 @@ class DivisionExpression extends Expression {
         int divident = new IntExpression(constraint).evaluate();
         ArrayList<Integer> divisors = getDivisors(divident);
         int divisor = new IntExpression(divisors).evaluate();
+
         mValue = divident / divisor;
         mStr = String.format("%s/%s", Integer.toString(divident), Integer.toString(divisor));
     }

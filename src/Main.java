@@ -5,7 +5,6 @@ import java.util.Set;
 
 public class Main {
 
-    //TODO: create param class with needed properties
     public static void main(String[] args) {
         Parameters param = new Parameters();
 
